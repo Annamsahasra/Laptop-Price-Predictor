@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Price Prediction Result | Future Tech Analytics</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-laptop"></i>
+            <span>Laptop Price Prediction</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Result Card -->
+        <div class="app-card result-card">
+            
+            <div class="result-badge">Estimated Value</div>
+            
+            <div class="result-price">
+                <span class="result-currency">&euro;</span>{{ "%.2f"|format(price) }}
+            </div>
+            
+            <div class="result-description">
+                Estimated retail market value based on input configurations.
+            </div>
+
+            <!-- Specs Grid -->
+            <div class="specs-container">
+                <div class="specs-title">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Selected Laptop Specifications</span>
+                </div>
+                
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Manufacturer</span>
+                        <span class="spec-value">{{ specs.company }}</span>
+                    </div>
+                    
+                    <div class="spec-item">
+                        <span class="spec-label">Category Type</span>
+                        <span class="spec-value">{{ specs.typename }}</span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Processor (CPU)</span>
+                        <span class="spec-value">{{ specs.cpu_brand }}</span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Graphics (GPU)</span>
+                        <span class="spec-value">{{ specs.gpu_brand }} Brand</span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Memory (RAM)</span>
+                        <span class="spec-value">{{ specs.ram }} GB</span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Operating System</span>
+                        <span class="spec-value">{{ specs.os }}</span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Storage Capacity</span>
+                        <span class="spec-value">
+                            {{ specs.storage_desc }} (Total: {{ specs.total_storage }} GB)
+                        </span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Display & Screen</span>
+                        <span class="spec-value">
+                            {{ specs.inches }}" {{ specs.resolution }} 
+                            {% if specs.ips == 1 %}(IPS){% endif %}
+                            {% if specs.touchscreen == 1 %}(Touch){% endif %}
+                            - {{ "%.2f"|format(specs.ppi) }} PPI
+                        </span>
+                    </div>
+
+                    <div class="spec-item">
+                        <span class="spec-label">Device Weight</span>
+                        <span class="spec-value">{{ specs.weight }} kg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="form-actions" style="margin-top: 0; border: none; padding: 0; justify-content: center;">
+                <a href="/" class="btn btn-primary" style="flex-grow: 0; min-width: 250px;">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Predict Another Laptop</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Laptop Price Prediction | Developed by Sahasra Annam</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Price Predictor | Future Tech Analytics</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tom Select CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-laptop"></i>
+            <span>Laptop Price Prediction</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <div class="hero">
+            <img src="{{ url_for('static', filename='images/laptop_banner.jpg') }}" alt="Futuristic Laptop Banner" class="hero-banner">
+            <div class="hero-content">
+                <h1>Laptop Price Predictor</h1>
+                <p>Estimate the retail price of a laptop based on hardware configurations using our advanced machine learning prediction pipeline.</p>
+            </div>
+        </div>
+
+        {% if error %}
+        <div class="alert-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+                <strong>Inference Error:</strong> {{ error }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Form Card -->
+        <div class="app-card">
+            <form action="/predict" method="POST" id="predictorForm">
+                
+                <!-- Section 1: Brand & Type -->
+                <div class="form-section-title">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Brand & Identification</span>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="company">Company / Manufacturer</label>
+                        <select name="company" id="company" required>
+                            <option value="" disabled selected>Select Brand</option>
+                            <option value="Acer">Acer</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Asus">Asus</option>
+                            <option value="Chuwi">Chuwi</option>
+                            <option value="Dell">Dell</option>
+                            <option value="Fujitsu">Fujitsu</option>
+                            <option value="Google">Google</option>
+                            <option value="HP">HP</option>
+                            <option value="Huawei">Huawei</option>
+                            <option value="LG">LG</option>
+                            <option value="Lenovo">Lenovo</option>
+                            <option value="MSI">MSI</option>
+                            <option value="Mediacom">Mediacom</option>
+                            <option value="Microsoft">Microsoft</option>
+                            <option value="Razer">Razer</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Toshiba">Toshiba</option>
+                            <option value="Vero">Vero</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="typename">TypeName / Category</label>
+                        <select name="typename" id="typename" required>
+                            <option value="" disabled selected>Select Category</option>
+                            <option value="2 in 1 Convertible">2 in 1 Convertible</option>
+                            <option value="Gaming">Gaming</option>
+                            <option value="Netbook">Netbook</option>
+                            <option value="Notebook">Notebook</option>
+                            <option value="Ultrabook">Ultrabook</option>
+                            <option value="Workstation">Workstation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 2: Processor & Platform -->
+                <div class="form-section-title">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Processor & Graphics</span>
+                </div>
+
+                <div class="form-grid-3">
+                    <div class="form-group">
+                        <label for="cpu_brand">CPU Brand</label>
+                        <select name="cpu_brand" id="cpu_brand" required>
+                            <option value="" disabled selected>Select CPU</option>
+                            <option value="Intel Core i7">Intel Core i7</option>
+                            <option value="Intel Core i5">Intel Core i5</option>
+                            <option value="Intel Core i3">Intel Core i3</option>
+                            <option value="AMD">AMD Ryzen / A-Series</option>
+                            <option value="Other">Intel Pentium/Celeron/Xeon/Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gpu_brand">GPU Brand</label>
+                        <select name="gpu_brand" id="gpu_brand" required>
+                            <option value="" disabled selected>Select GPU</option>
+                            <option value="Intel">Intel Graphics</option>
+                            <option value="Nvidia">Nvidia GeForce/Quadro</option>
+                            <option value="AMD">AMD Radeon</option>
+                            <option value="ARM">ARM Mali</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="os">Operating System</label>
+                        <select name="os" id="os" required>
+                            <option value="" disabled selected>Select OS</option>
+                            <option value="Windows">Windows (10/7/S)</option>
+                            <option value="Mac">macOS / Mac OS X</option>
+                            <option value="Linux">Linux</option>
+                            <option value="Others">Chrome OS/Android/No OS/Others</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 3: Performance & Physical Specs -->
+                <div class="form-section-title">
+                    <i class="fa-solid fa-memory"></i>
+                    <span>Performance & Form Factor</span>
+                </div>
+
+                <div class="form-grid-4">
+                    <div class="form-group">
+                        <label for="ram">RAM (GB)</label>
+                        <input type="number" name="ram" id="ram" min="2" max="128" placeholder="e.g. 8" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" step="0.01" name="weight" id="weight" min="0.5" max="10.0" placeholder="e.g. 1.37" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inches">Screen Size (Inches)</label>
+                        <input type="number" step="0.1" name="inches" id="inches" min="10.0" max="22.0" placeholder="e.g. 13.3" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resolution">Screen Resolution</label>
+                        <select name="resolution" id="resolution" required>
+                            <option value="" disabled selected>Select Resolution</option>
+                            <option value="1920x1080">1920x1080 (Full HD)</option>
+                            <option value="1366x768">1366x768 (HD Standard)</option>
+                            <option value="1600x900">1600x900 (HD+)</option>
+                            <option value="2560x1600">2560x1600 (Retina WQXGA)</option>
+                            <option value="2560x1440">2560x1440 (QHD)</option>
+                            <option value="2880x1800">2880x1800 (Retina)</option>
+                            <option value="3840x2160">3840x2160 (4K Ultra HD)</option>
+                            <option value="3200x1800">3200x1800 (QHD+)</option>
+                            <option value="1440x900">1440x900 (MacBook standard)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Display Tech switches -->
+                <div class="form-grid" style="margin-bottom: 2rem;">
+                    <div class="form-group">
+                        <label>Display Enhancements</label>
+                        <div class="toggle-group">
+                            <label class="toggle-container">
+                                <input type="checkbox" name="touchscreen" value="1" class="toggle-input">
+                                <span class="toggle-slider"></span>
+                                <span>Touchscreen Display</span>
+                            </label>
+                            <label class="toggle-container">
+                                <input type="checkbox" name="ips" value="1" class="toggle-input">
+                                <span class="toggle-slider"></span>
+                                <span>IPS Panel</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Storage Configurations -->
+                <div class="form-section-title">
+                    <i class="fa-solid fa-hard-drive"></i>
+                    <span>Storage Components</span>
+                </div>
+
+                <div class="form-grid-4">
+                    <div class="form-group">
+                        <label for="ssd">SSD Storage (GB)</label>
+                        <select name="ssd" id="ssd">
+                            <option value="0">None</option>
+                            <option value="128">128 GB</option>
+                            <option value="256" selected>256 GB</option>
+                            <option value="512">512 GB</option>
+                            <option value="1024">1024 GB (1 TB)</option>
+                            <option value="2048">2048 GB (2 TB)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hdd">HDD Storage (GB)</label>
+                        <select name="hdd" id="hdd">
+                            <option value="0" selected>None</option>
+                            <option value="500">500 GB</option>
+                            <option value="1000">1000 GB (1 TB)</option>
+                            <option value="2000">2000 GB (2 TB)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="flash">Flash Storage (GB)</label>
+                        <select name="flash" id="flash">
+                            <option value="0" selected>None</option>
+                            <option value="32">32 GB</option>
+                            <option value="64">64 GB</option>
+                            <option value="128">128 GB</option>
+                            <option value="256">256 GB</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hybrid">Hybrid Storage (GB)</label>
+                        <select name="hybrid" id="hybrid">
+                            <option value="0" selected>None</option>
+                            <option value="500">500 GB</option>
+                            <option value="1000">1000 GB (1 TB)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Form Submit and Reset -->
+                <div class="form-actions">
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                        <span>Reset Form</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span>Calculate Predicted Price</span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Laptop Price Prediction | Developed by Sahasra Annam</p>
+    </footer>
+
+    <!-- Tom Select JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+    <!-- Form Validation & Tom Select Initialization Scripts -->
+    <script>
+        // Initialize Tom Select on all dropdowns
+        document.querySelectorAll('select').forEach(function(el) {
+            const isSearchable = ['company', 'cpu_brand', 'gpu_brand'].includes(el.id);
+            new TomSelect(el, {
+                create: false,
+                controlInput: isSearchable ? undefined : null,
+                sortField: isSearchable ? { field: "text", direction: "asc" } : null
+            });
+        });
+
+        document.getElementById('predictorForm').addEventListener('submit', function(e) {
+            const ram = parseFloat(document.getElementById('ram').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const inches = parseFloat(document.getElementById('inches').value);
+
+            if (isNaN(ram) || ram <= 0) {
+                alert("RAM must be a positive integer.");
+                e.preventDefault();
+                return;
+            }
+            if (isNaN(weight) || weight <= 0) {
+                alert("Weight must be a positive number.");
+                e.preventDefault();
+                return;
+            }
+            if (isNaN(inches) || inches <= 0) {
+                alert("Screen size (inches) must be a positive number.");
+                e.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
